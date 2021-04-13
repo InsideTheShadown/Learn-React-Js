@@ -1,30 +1,25 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import TodoList from './components/TodoList';
+import { Route, Switch, useRouteMatch } from 'react-router';
+import ListPage from './pages/ListPage';
+import DetailPage from './pages/DetailPage';
+import NotFound from '../../components/NotFound';
 
 TodoFeature.propTypes = {
     
 };
 
 function TodoFeature(props) {
-    const todoList = [
-        {
-            id:1,
-            title: 'Eat'
-        },
-        {
-            id:2,
-            title: 'Sleep'
-        },
-        {
-            id:3,
-            title: 'Code'
-        },
-    ];
+    const match = useRouteMatch();
+    console.log(match);
     return (
         <div>
-            <h3>Todo List</h3>
-            <TodoList todoList={todoList} />
+            <Switch>
+            <Route path={`${match.path}`} component={ListPage} exact/>
+                {/* <Route path={match.path} component={ListPage} exact/> */}
+                <Route path = {`${match.path}/:todoId`} component={DetailPage} exact/>
+                {/* <Route component={NotFound}/> */}
+            </Switch>
         </div>
     );
 }

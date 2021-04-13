@@ -1,42 +1,43 @@
 import logo from './logo.svg';
+import React, {useEffect} from 'react';
+import { Link, NavLink, Redirect, Route, Switch } from 'react-router-dom';
 import './App.css';
 import TodoFeature from './features/Todo';
 import SongFeature from './features/Song';
+import ColorBox from './features/ColorBox';
+import Counter from './features/Counter';
+import Album from './features/Song/Album';
+import NotFound from '../src/components/NotFound';
+import productApi from './api/productApi';
+import CounterFeature from './features/CounterRedux';
+import Header from './components/Header';
 
 function App() {
-  const name = 'Hòa';
-  const age = 22;
-  const isFemale = false;
-  const student = {
-    name : 'Easy Frontend'
-  };
-  const colorList = ['red', 'green', 'blue'];
 
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const params = {
+        _limit : 10,
+      };
+      const products = await productApi.getAll(params);// gọi đến fileApi rồi fileApi gọi tk axiosClient
+      console.log(products);
+    }
+    fetchProducts();
+  }, []);
 
   return (
-    //dùng toán tử 3 ngôi khi đoạn JSX ngắn còn cách cuối khi JSX nhiều hơn
-    // error <p>{student}</p>
     <div className="App">
-      {/* <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Nguyen Van Hoa</p>
-        <p>Xin chào {name} - {age} - {isFemale ? 'Nữ' : 'Nam'}</p>
-        {isFemale ? <p>Nữ</p> : <p>Nam</p>}
+      <Header/>
 
-        {isFemale && <p>Nữ</p>}
-        {!isFemale && <p>Nam</p>}
-
-        <p>{student.name}</p>
-
-        <ul>
-          {colorList.map(color => (
-            <li key = {color} style = {{color}}>{color}</li>
-          ))}
-        </ul>
-      </header> */}
-      {/* <TodoFeature/> */}
-      <SongFeature/>
-      
+      <Switch>
+        <Redirect from="/home" to="/" exact></Redirect>
+        {/* <Redirect from = "/home" to= "/"></Redirect> */}
+        {/* <Redirect form = "posts-list/:postId" to = "posts/:postId"></Redirect> */}
+        <Route path="/todos" component={TodoFeature} exact />
+        <Route path="/albums" component = {SongFeature} />
+        {/* <Route path="/todos" component={TodoFeature} /> */}
+        {/* <Route component={NotFound} /> */}
+      </Switch>
     </div>
   );
 }
